@@ -15,7 +15,6 @@ const pageSize = 30;
 
 function OrderItem(props) {
   const {orderDetails, setOrderDetails, orderItems, setOrderItems} = props;
-  console.log("OrderItem --> orderDetails: ", orderDetails)
   // const [orderItems, setOrderItems] = useState([]);
   const [itemCodes, setItemCodes] = useState([]);
   const [itemDescs, setItemDescs] = useState([]);
@@ -41,14 +40,11 @@ function OrderItem(props) {
   }, []);
 
   const onTextChange = (event, dataItem) => {
-    console.log("onTextChange value: ", event.target.value);
-    console.log("onTextChange name: ", event.target.name);
     const items = [...orderItems];
     const selectedItems = items.filter((x) => x.index === dataItem.index);
     if(selectedItems.length > 0) {
       selectedItems[0][event.target.name] = event.target.value;
       if (selectedItems.length > 0) {
-        console.log("onTextChange Calculation ");
         const x = selectedItems[0];
         if (x.quantity && x.price) {
           x.exclAmount = +x.quantity * +x.price;
@@ -99,17 +95,11 @@ function OrderItem(props) {
       take = dropDownSettingDesc.take;
       filterText = dropDownSettingDesc.filterText;
     }
-    console.log(`getStockItemDropDownData --> ${field} --> skip: ${skip}`);
-    console.log(`getStockItemDropDownData --> ${field} --> take: ${take}`);
-    console.log(
-      `getStockItemDropDownData --> ${field} --> filterText: ${filterText}`
-    );
     axios
       .get(
         `${baseUrl}/api/v1/StkItem/getStkItemIdCodeDesc/${field}/${skip}/${take}?filterText=${filterText}`
       )
       .then((response) => {
-        console.log("getStockItemDropDownData: ", response.data);
         if (field === "Code") {
           setItemCodes(response.data.list);
           const ddsIc = dropDownSettingIc;
@@ -128,7 +118,6 @@ function OrderItem(props) {
   };
 
   const DropDownCellItemCode = (props) => {
-    console.log("DropDownCellItemCode --> props: ", props);
     const { dataItem } = props;
     return (
       <td>
@@ -196,10 +185,6 @@ function OrderItem(props) {
   };
 
   const handleSelectChange = (selectedOption, field, dataItem) => {
-    console.log("handleSelectChange --> order Items: ", orderItems);
-    console.log(`handleSelectChange --> field: ${field}`);
-    console.log("handleSelectChange --> selectedOption: ", selectedOption);
-    console.log("handleSelectChange --> dataItem: ", dataItem);
     const itemId = selectedOption?.value?.value;
     getItemDetails(itemId, dataItem);
     const items = [...orderItems];
@@ -232,7 +217,6 @@ function OrderItem(props) {
     axios
       .get(`${baseUrl}/api/v1/stkItem/getStockItem/${itemId}`)
       .then((response) => {
-        console.log("getItemDetails: ", response.data);
         const items = [...orderItems];
         const selectedItems = items.filter((x) => x.index === dataItem.index);
         if (selectedItems.length > 0) {
@@ -256,8 +240,6 @@ function OrderItem(props) {
   };
 
   const onFilterChange = (event, field) => {
-    console.log("onFilterChange --> field: ", field);
-    console.log("onFilterChangeIc --> filter: ", event.filter);
     const filterText = event.filter.value;
 
     if (field === "Code") {
@@ -274,7 +256,6 @@ function OrderItem(props) {
   };
 
   const pageChange = (event, field) => {
-    console.log("pageChangeIc event: ", event);
     const skip = event.page.skip;
     const take = event.page.take;
 
@@ -307,10 +288,8 @@ function OrderItem(props) {
 
   const remove = () => {
     const items =[...orderItems];
-    console.log("remove --> before items: ", items);
     let index = items.findIndex((record) => record.index === removedItem.index);
     items.splice(index, 1);
-    console.log("remove --> after items: ", items);
     setOrderItems(items);    
     setShowRemoveItemDialog();
   };

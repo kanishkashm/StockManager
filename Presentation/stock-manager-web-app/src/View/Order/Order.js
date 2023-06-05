@@ -31,7 +31,6 @@ function Order() {
   });
 
   const onFilterChange = (event) => {
-    console.log("onFilterChange --> filter: ", event.filter);
     const filterText = event.filter.value;
     const dds = dropDownSetting;
     dds.filterText = filterText;
@@ -40,7 +39,6 @@ function Order() {
   }
 
   const pageChange = (event) => {
-    console.log("event: ", event);
     const skip = event.page.skip;
     const take = event.page.take;
     const dds = dropDownSetting;
@@ -55,13 +53,9 @@ function Order() {
   }, []);
 
   const getClientsIdNamesWithPaging = () => {
-    console.log("getClientsIdNamesWithPaging --> skip: ", dropDownSetting.skip);
-    console.log("getClientsIdNamesWithPaging --> take: ", dropDownSetting.take);
-    console.log("getClientsIdNamesWithPaging --> filterText: ", dropDownSetting.filterText);
     axios
       .get(`${baseUrl}/api/v1/client/getClientsIdNamesPaging/${dropDownSetting.skip}/${dropDownSetting.take}?filterText=${dropDownSetting.filterText}`)
       .then((response) => {
-        console.log("getClientsIdNames: ", response.data);
         setTotal(response.data.total);
         setCustomer(response.data.clients);
       })
@@ -76,7 +70,6 @@ function Order() {
         .get(`${baseUrl}/api/v1/client/getClientDetails/${clientId}`)
         .then((response) => {
           const customerDetails = response.data;
-          console.log("getClientDetails: ", customerDetails);
           const od = {
             ...orderDetails,
             ["address1"]: customerDetails.post1,
@@ -93,42 +86,26 @@ function Order() {
   };
 
   const onTextChange = (event) => {
-    console.log("target: ", event.target);
-    console.log("value: ", event.target.value);
-    console.log("name: ", event.target.name);
-    console.log("onTextChange --> before: ", orderDetails);
     const od = { ...orderDetails, [event.target.name]: event.target.value };
     setOrderDetails(od);
-    console.log("onTextChange --> after: ", orderDetails);
   };
 
   const handleSelectChange = (selectedOption) => {
-    console.log("handleSelectChange --> selectedOption: ", selectedOption);
-    console.log("handleSelectChange --> orderDetails: ", orderDetails);
     setSelectedCustomer(selectedOption.value);
     const clientId = selectedOption?.value.dclink;
     getClientDetails(clientId);
     const od = { ...orderDetails, ["customer"]: clientId };
-    console.log("handleSelectChange --> od: ", od);
     setOrderDetails(od);
   };
 
   const saveOrder = () => {
-    console.log('saveOrder --> customer: ', selectedCustomer);
-    console.log('saveOrder --> header: ', orderDetails);
-    console.log('saveOrder --> item:', orderItems);
     let invoiceDate = '';
     const pickedDate = new Date(orderDetails.invoiceDate);
-    console.log("pickedDate: ", pickedDate);
     if(pickedDate != "Invalid Date") {
       //date format mm/dd/yyyy
-      console.log("pickedDate: correct ", pickedDate);
       const month = pickedDate.getMonth();
       const date = pickedDate.getDate();
       const year = pickedDate.getFullYear();
-      console.log("Month: ", month);
-      console.log("date: ", date);
-      console.log("year: ", year);
       invoiceDate = `${month}/${date}/${year}`;
     }
 
@@ -144,7 +121,6 @@ function Order() {
         note: y.note
       };
     });
-    console.log("stockItemToSave: ", stockItemToSave);
 
     //check validation goes here
 
@@ -161,7 +137,6 @@ function Order() {
     };
     axios.post(`${baseUrl}/api/v1/order`, orderDetailsToSave)
     .then((response) => {
-      console.log("response: ", response.data);
       setNotificationState({
         showNotification: true,
         style: 'success',
