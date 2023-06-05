@@ -21,6 +21,9 @@ namespace SM.Infrastructure.Data
         public virtual DbSet<Client> Clients { get; set; } = null!;
         public virtual DbSet<StkItem> StkItems { get; set; } = null!;
 
+        public virtual DbSet<OrderHeader> OrderHeaders { get; set; }
+        public virtual DbSet<OrderItem> OrderItems { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

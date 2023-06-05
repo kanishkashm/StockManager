@@ -16,7 +16,10 @@ namespace SM.Core.Contracts
                                        bool disableTracking = true);
         Task<T> GetByIdAsync(int id);
         Task<T> AddAsync(T entity);
-        Task UpdateAsync(T entity);
-        Task DeleteAsync(T entity);
+
+        Task AddAsync(List<T> entities);
+
+        void Update(T entity);
+        void Delete(T entity);
     }
 }

@@ -59,21 +59,29 @@ namespace SM.Infrastructure.Repositories
 
         public async Task<T> AddAsync(T entity)
         {
-            _dbContext.Set<T>().Add(entity);
+            await _dbContext.Set<T>().AddAsync(entity);
             await _dbContext.SaveChangesAsync();
             return entity;
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task AddAsync(List<T> entities)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.Set<T>().AddRangeAsync(entities);
+            //await _dbContext.SaveChangesAsync();
+            //return entity;
         }
 
-        public async Task DeleteAsync(T entity)
+        public void Update(T entity)
+        {
+            _dbContext.Set<T>().Update(entity);
+            //_dbContext.Entry(entity).State = EntityState.Modified;
+            //await _dbContext.SaveChangesAsync();
+        }
+
+        public void Delete(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
-            await _dbContext.SaveChangesAsync();
+            //await _dbContext.SaveChangesAsync();
         }
     }
 }

@@ -4,7 +4,7 @@ using SM.Core.Features.Clients.Queries.GetClientsIdNames;
 
 namespace SM.Core.Features.StkItem.Queries.GetStkItemIdCodeDescriptions
 {
-    public class GetStkItemIdCodeDescriptionsQueryHandler : IRequestHandler<GetStkItemIdCodeDescriptionsQuery, IEnumerable<StkItemIdCodeDescriptionsVm>>
+    public class GetStkItemIdCodeDescriptionsQueryHandler : IRequestHandler<GetStkItemIdCodeDescriptionsQuery, StkItemIdCodeDescriptionsPagingVm>
     {
         private readonly IStkItemRepository _stkItemRepository;
 
@@ -13,9 +13,9 @@ namespace SM.Core.Features.StkItem.Queries.GetStkItemIdCodeDescriptions
             _stkItemRepository = stkItemRepository;
         }
 
-        public async Task<IEnumerable<StkItemIdCodeDescriptionsVm>> Handle(GetStkItemIdCodeDescriptionsQuery request, CancellationToken cancellationToken)
+        public async Task<StkItemIdCodeDescriptionsPagingVm> Handle(GetStkItemIdCodeDescriptionsQuery request, CancellationToken cancellationToken)
         {
-            var stkItemList = await _stkItemRepository.GetStkItemIdCodeDescriptions(request.Field);
+            var stkItemList = await _stkItemRepository.GetStkItemIdCodeDescriptions(request.Field, request.Skip, request.Take, request.FilterText);
             return stkItemList;
         }
     }
