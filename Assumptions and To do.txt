@@ -1,0 +1,15 @@
+To dos
+	UI side validation
+  	Grid inline editing -> need to improve user experience
+	UI improvement
+	
+Assumptions
+	"PurchaseAccount" field in StkItem table consider as item price
+
+Tech and tools
+	Visual Studio 2022 - Backend dev
+	Visual Studio Code - Frontend dev
+	SQL Server - DB server
+	Clean Architecture 
+
+
